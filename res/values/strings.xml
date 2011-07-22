@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, TinyFTPActivity!</string>
+    <string name="app_name">TinyFTP</string>
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+</resources>
