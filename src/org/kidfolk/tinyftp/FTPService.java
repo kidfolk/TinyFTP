@@ -41,7 +41,7 @@ public class FTPService extends Service implements Runnable {
 		while(true){
 			try {
 				clientSocket = serverSocket.accept();
-				Session session = new Session(clientSocket);
+				Session session = new Session(clientSocket,new NormalDataSocketFactory());
 				Thread sessionThread = new Thread(session);
 				sessionThread.start();
 			} catch (IOException e) {
