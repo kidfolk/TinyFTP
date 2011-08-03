@@ -7,7 +7,7 @@ import android.util.Log;
  *
  */
 public class TYPECmd extends FTPCmd {
-	private static String TAG = "TYPECmd";
+	private static final String TAG = "TYPECmd";
 	private String inputStr;
 	
 	
@@ -21,6 +21,7 @@ public class TYPECmd extends FTPCmd {
 
 	@Override
 	public void run() {
+		Log.v(TAG, "TYPECmd executing!");
 		String output;
 		String type = getParameter(inputStr);
 		if(type.equals("I") || type.equals("L 8")) {
@@ -33,6 +34,7 @@ public class TYPECmd extends FTPCmd {
 			output = "503 Malformed TYPE command\r\n";
 		}
 		session.sendReplyString(output);
+		Log.v(TAG, output);
 	}
  
 }

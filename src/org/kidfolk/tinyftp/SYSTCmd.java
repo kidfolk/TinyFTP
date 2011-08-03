@@ -7,7 +7,8 @@ import android.util.Log;
  *
  */
 public class SYSTCmd extends FTPCmd {
-	private static String TAG = "SYSTCmd";
+	private static final String TAG = "SYSTCmd";
+	public static final String response = "215 UNIX Type: L8\r\n";
 	private String inputStr;
 	
 	
@@ -21,9 +22,9 @@ public class SYSTCmd extends FTPCmd {
 
 	@Override
 	public void run() {
-		Log.v(TAG, "215 UNIX Type: L8\r\n");
-		session.sendReplyString("215 UNIX Type: L8\r\n");
-		
+		Log.v(TAG, "SYSTCmd executing!");
+		session.sendReplyString(response);
+		Log.v(TAG, response);
 	}
  
 }

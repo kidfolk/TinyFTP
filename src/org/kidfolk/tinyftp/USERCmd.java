@@ -7,7 +7,7 @@ import android.util.Log;
  *
  */
 public class USERCmd extends FTPCmd {
-	private static String TAG = "USERCmd";
+	private static final String TAG = "USERCmd";
 	private String inputStr;
 	
 	
@@ -21,10 +21,10 @@ public class USERCmd extends FTPCmd {
 
 	@Override
 	public void run() {
+		Log.v(TAG, "USERCmd executing!");
 		String username = FTPCmd.getParameter(inputStr);
 		session.sendReplyString("331 Password required for "+username+"\r\n");
 		Log.v(TAG, "331 Password required for "+username);
-		
 	}
  
 }

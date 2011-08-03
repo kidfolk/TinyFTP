@@ -1,7 +1,9 @@
 package org.kidfolk.tinyftp;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
 
 import android.util.Log;
 /**
@@ -19,13 +21,14 @@ public abstract class FTPCmd implements Runnable {
 			                      new CmdMap(SYSTCmd.class, "SYST"),
 			                      new CmdMap(PWDCmd.class, "PWD"),
 			                      new CmdMap(TYPECmd.class, "TYPE"),
-			                      new CmdMap(EPSVCmd.class, "EPSV"),
+			                      /*new CmdMap(EPSVCmd.class, "EPSV"),*/
 			                      new CmdMap(SIZECmd.class, "SIZE"),
 			                      new CmdMap(CWDCmd.class, "CWD"),
 			                      new CmdMap(LISTCmd.class, "LIST"),
 			                      new CmdMap(FEATCmd.class, "FEAT"),
 			                      new CmdMap(OPTSCmd.class, "OPTS"),
-			                      new CmdMap(PASVCmd.class, "PASV")};
+			                      new CmdMap(PASVCmd.class, "PASV"),
+			                      new CmdMap(NLISTCmd.class, "NLIST")};
 	
 	
 
@@ -71,23 +74,18 @@ public abstract class FTPCmd implements Runnable {
 					ftpCmdInstance = constructor.newInstance(new Object[]{session,inputStr});
 					//处理命令
 					ftpCmdInstance.run();
+					Log.v(TAG, ftpCmdInstance.getClass().getName()+" run!");
 				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -128,6 +126,42 @@ public abstract class FTPCmd implements Runnable {
 	 */
 	static public String getParameter(String input) {
 		return getParameter(input, false);
+	}
+	/**
+	 * 将参数添加到根目录结构上，获得新的文件路径
+	 * @param existingPrefix
+	 * @param param
+	 * @return
+	 */
+	public static File inputPathToChrootedFile(File existingPrefix, String param) {
+		try {
+			if(param.charAt(0) == '/') {
+				// The STOR contained an absolute path
+				File chroot = new File(GlobleConfig.rootdir);
+				return new File(chroot, param);
+			}
+		} catch (Exception e) {} 
+		
+		// The STOR contained a relative path
+		return new File(existingPrefix, param); 
+	}
+	
+	public boolean violatesChroot(File file) {
+		File chroot = new File(GlobleConfig.rootdir);
+		try {
+			String canonicalPath = file.getCanonicalPath();
+			if(!canonicalPath.startsWith(chroot.toString())) {
+				Log.v(TAG, "Path violated folder restriction, denying");
+				Log.v(TAG, "path: " + canonicalPath);
+				Log.v(TAG, "chroot: " + chroot.toString());
+				return true; // the path must begin with the chroot path
+			}
+			return false;
+		} catch(Exception e) {
+			Log.v(TAG, "Path canonicalization problem: " + e.toString());
+			Log.v(TAG, "When checking file: " + file.getAbsolutePath());
+			return true;  // for security, assume violation
+		}
 	}
 
 }

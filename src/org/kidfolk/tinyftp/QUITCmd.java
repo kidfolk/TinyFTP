@@ -3,7 +3,7 @@ package org.kidfolk.tinyftp;
 import android.util.Log;
 
 public class QUITCmd extends FTPCmd {
-	private static String TAG = "QUITCmd";
+	private static final String TAG = "QUITCmd";
 	private String inputStr;
 	
 	
@@ -17,10 +17,9 @@ public class QUITCmd extends FTPCmd {
 
 	@Override
 	public void run() {
-		Log.v(TAG, "QUITCmd operation!");
-		session.sendReplyString("210 CWD successful\r\n");
-		// TODO Auto-generated method stub
-		
+		Log.v(TAG, "QUITting");
+		session.sendReplyString("221 Goodbye\r\n");
+		session.closeCmdSocket();
 	}
  
 }

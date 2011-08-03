@@ -2,6 +2,8 @@ package org.kidfolk.tinyftp;
 
 import java.net.InetAddress;
 
+import android.util.Log;
+
 /**
  * Enter passive mode.
  * 
@@ -19,6 +21,8 @@ public class PASVCmd extends FTPCmd {
 
 	@Override
 	public void run() {
+		Log.v(TAG, "PASVCmd executing!");
+		String cantOpen = "502 Couldn't open a port\r\n";
 		int port = session.onPASV();
 		if (port != 0) {
 			InetAddress inetAddress = session.getDataSocketPasvIP();
@@ -34,9 +38,11 @@ public class PASVCmd extends FTPCmd {
 			response.append(port % 256);
 			response.append(").\r\n");
 			session.sendReplyString(response.toString());
+			Log.v(TAG, "PASVCmd complete!sent: "+response.toString());
 		}else{
-			session.sendReplyString("502 Couldn't open a port\r\n");
+			session.sendReplyString(cantOpen);
 		}
+		
 	}
 
 }

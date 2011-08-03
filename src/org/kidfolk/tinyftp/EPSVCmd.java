@@ -1,12 +1,12 @@
-package org.kidfolk.tinyftp;
+/*package org.kidfolk.tinyftp;
 
 import android.util.Log;
-/**
+*//**
  * Enter extended passive mode.
  * like PASV
  * @author kidfolk
  *
- */
+ *//*
 public class EPSVCmd extends FTPCmd {
 
 	private static String TAG = "EPSVCmd";
@@ -35,3 +35,4 @@ public class EPSVCmd extends FTPCmd {
  
 }
  
+*/

@@ -7,7 +7,7 @@ import android.util.Log;
  *
  */
 public class PASSCmd extends FTPCmd {
-	private static String TAG = "PASSCmd";
+	private static final String TAG = "PASSCmd";
 	private String inputStr;
 	
 	
@@ -21,7 +21,7 @@ public class PASSCmd extends FTPCmd {
 
 	@Override
 	public void run() {
-		Log.v(TAG, "PASSCmd operation");
+		Log.v(TAG, "PASSCmd executing!");
 		String password = FTPCmd.getParameter(inputStr);
 		if(password.equals(GlobleConfig.password)){
 			session.sendReplyString("230 Logged on\r\n");
@@ -30,6 +30,7 @@ public class PASSCmd extends FTPCmd {
 			session.sendReplyString("530 Login or password incorrect!\r\n");
 			Log.v(TAG, "530 Login or password incorrect!");
 		}
+		Log.v(TAG, "PASSCmd complete!");
 	}
  
 }
