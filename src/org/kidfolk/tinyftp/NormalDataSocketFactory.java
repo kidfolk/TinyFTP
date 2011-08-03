@@ -27,6 +27,7 @@ public class NormalDataSocketFactory extends DataSocketFactory {
 	public int onPasv() {
 		try {
 			//listen a free port
+//			server = new ServerSocket(0);
 			server = new ServerSocket(0);
 			return server.getLocalPort();
 		} catch (IOException e) {
