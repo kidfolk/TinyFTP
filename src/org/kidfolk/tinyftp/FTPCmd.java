@@ -29,7 +29,9 @@ public abstract class FTPCmd implements Runnable {
 			                      new CmdMap(OPTSCmd.class, "OPTS"),
 			                      new CmdMap(PASVCmd.class, "PASV"),
 			                      new CmdMap(NLISTCmd.class, "NLIST"),
-			                      new CmdMap(NOOPCmd.class, "NOOP")};
+			                      new CmdMap(NOOPCmd.class, "NOOP"),
+			                      new CmdMap(RETRCmd.class, "RETR"),
+			                      new CmdMap(STORCmd.class, "STOR")};
 	
 	
 
