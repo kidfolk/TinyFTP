@@ -16,18 +16,21 @@ public class NormalDataSocketFactory extends DataSocketFactory {
 	int remotePort;
 	 
 	boolean isPasvMode;
+	
+ int port = 8889;
 
 	@Override
 	public boolean onPort(InetAddress dest, int port) {
-		// TODO Auto-generated method stub
-		return false;
+		this.remoteAddr = dest;
+		this.remotePort = port;
+		return true;
 	}
 
 	@Override
 	public int onPasv() {
 		try {
 			//listen a free port
-//			server = new ServerSocket(0);
+//			server = new ServerSocket(port++);
 			server = new ServerSocket(0);
 			return server.getLocalPort();
 		} catch (IOException e) {
