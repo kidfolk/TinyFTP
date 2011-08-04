@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -97,6 +98,15 @@ public class Session implements Runnable {
 	public int onPASV() {
 		return dataSocketFactory.onPasv();
 	}
+	
+	/**
+	 * Called when we receive a PORT command.
+	 * 
+	 * @return Whether the necessary initialization was successful.
+	 */
+	public boolean onPort(InetAddress dest, int port) {
+		return dataSocketFactory.onPort(dest, port);
+	}
 
 	/**
 	 * get the dataSocket IP address the IP is the same as cmdSocket
@@ -177,6 +187,48 @@ public class Session implements Runnable {
 			dataSocket = null;
 			return false;
 		}
+	}
+	
+	/**
+	 * Received some bytes from the data socket, which is assumed to already be
+	 * connected. The bytes are placed in the given array, and the number of
+	 * bytes successfully read is returned.
+	 * 
+	 * @param bytes
+	 *            Where to place the input bytes
+	 * @return >0 if successful which is the number of bytes read, -1 if no
+	 *         bytes remain to be read, -2 if the data socket was not connected,
+	 *         0 if there was a read error
+	 */
+	public int receiveFromDataSocket(byte[] buf) {
+		int bytesRead;
+
+		if (dataSocket == null) {
+			Log.v(TAG, "Can't receive from null dataSocket");
+			return -2;
+		}
+		if (!dataSocket.isConnected()) {
+			Log.v(TAG, "Can't receive from unconnected socket");
+			return -2;
+		}
+		InputStream in;
+		try {
+			in = dataSocket.getInputStream();
+			// If the read returns 0 bytes, the stream is not yet
+			// closed, but we just want to read again.
+			while ((bytesRead = in.read(buf, 0, buf.length)) == 0) {
+			}
+			if (bytesRead == -1) {
+				// If InputStream.read returns -1, there are no bytes
+				// remaining, so we return 0.
+				return -1;
+			}
+		} catch (IOException e) {
+			Log.v(TAG, "Error reading data socket");
+			return 0;
+		}
+//		dataSocketFactory.reportTraffic(bytesRead);
+		return bytesRead;
 	}
 	
 	public void closeDataSocket() {
