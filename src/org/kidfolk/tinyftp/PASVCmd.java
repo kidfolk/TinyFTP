@@ -38,6 +38,8 @@ public class PASVCmd extends FTPCmd {
 			response.append(port % 256);
 			response.append(").\r\n");
 			session.sendReplyString(response.toString());
+//			session.sendReplyString("datasocketport:"+port);
+			Log.v(TAG, "server port:"+port);
 			Log.v(TAG, "PASVCmd complete!sent: "+response.toString());
 		}else{
 			session.sendReplyString(cantOpen);
