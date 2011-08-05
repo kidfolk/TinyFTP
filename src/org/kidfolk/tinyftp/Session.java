@@ -14,6 +14,7 @@ import java.net.Socket;
 import android.util.Log;
 
 public class Session implements Runnable {
+	private static final String TAG = "Session";
 	private Socket cmdSocket;// 命令通道
 	protected Socket dataSocket = null;
 	protected DataSocketFactory dataSocketFactory;// 数据通道
@@ -21,7 +22,7 @@ public class Session implements Runnable {
 	protected File currentDir = new File(GlobleConfig.rootdir);//当前目录，随着用户的操作而改变
 	protected boolean isBinaryMode = false;
 	protected String encoding = "UTF-8";
-	private static final String TAG = "Session";
+	private File renameFrom;
 
 	public Session(Socket cmdSocket, DataSocketFactory dataSocketFactory) {
 		super();
@@ -278,10 +279,22 @@ public class Session implements Runnable {
 		return currentDir;
 	}
 
-	public void setCurrentDir(String subdir) {
+	public void addSubDirToCurrentDir(String subdir) {
 		this.currentDir = new File(this.currentDir,subdir);
+	}
+
+	public void setCurrentDir(File currentDir) {
+		this.currentDir = currentDir;
+	}
+
+	public void setRenameFrom(File file) {
+		this.renameFrom = file;
+	}
+
+	public File getRenameFrom() {
+		return renameFrom;
 	}
 	
 	
-
+	
 }
