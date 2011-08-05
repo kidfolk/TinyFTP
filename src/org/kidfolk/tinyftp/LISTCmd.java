@@ -38,7 +38,7 @@ public class LISTCmd extends AbstractLISTCmd {
 					errString = "550 LIST does not support wildcards\r\n";
 					break mainblock;
 				}
-				session.setCurrentDir(param);
+				session.addSubDirToCurrentDir(param);
 				fileToList = session.getCurrentDir();
 				if (violatesChroot(fileToList)) {
 					errString = "450 Listing target violates chroot\r\n";
@@ -76,6 +76,8 @@ public class LISTCmd extends AbstractLISTCmd {
 
 	@Override
 	public String makeLISTString(File file) {
+		Log.v(TAG, "makeLISTString start!");
+		long start = System.currentTimeMillis();
 		StringBuilder response = new StringBuilder();
 
 		if (!file.exists()) {
@@ -128,6 +130,9 @@ public class LISTCmd extends AbstractLISTCmd {
 		response.append(format.format(new Date(file.lastModified())));
 		response.append(lastNamePart);
 		response.append("\r\n");
+		long end = System.currentTimeMillis();
+		Log.v(TAG, "makeLISTString end!");
+		Log.v(TAG, "total millis:"+(end-start));
 		return response.toString();
 	}
 
