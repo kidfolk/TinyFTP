@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
@@ -36,11 +37,8 @@ public class FTPService extends Service implements Runnable {
 		isRunning = true;
 		try {
 			serverSocket = new ServerSocket(8888);
-//			serverSocket.bind(localAddr);
-//			Log.v(TAG, serverSocket.getLocalSocketAddress().toString());
 			Log.v(TAG, getWIFIAddress()+":8888");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		while(true){
@@ -51,7 +49,6 @@ public class FTPService extends Service implements Runnable {
 					Thread sessionThread = new Thread(session);
 					sessionThread.start();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
