@@ -33,7 +33,10 @@ public abstract class FTPCmd implements Runnable {
 			                      new CmdMap(RETRCmd.class, "RETR"),
 			                      new CmdMap(STORCmd.class, "STOR"),
 			                      new CmdMap(DELECmd.class, "DELE"),
-			                      new CmdMap(PORTCmd.class, "PORT")};
+			                      new CmdMap(PORTCmd.class, "PORT"),
+			                      new CmdMap(CDUPCmd.class, "CDUP"),
+			                      new CmdMap(RNFRCmd.class, "RNFR"),
+			                      new CmdMap(RNTOCmd.class, "RNTO")};
 	
 	
 
