@@ -53,7 +53,7 @@ public class NLISTCmd extends AbstractLISTCmd {
 					errString = "550 NLST does not support wildcards\r\n";
 					break mainblock;
 				}
-				session.setCurrentDir(param);
+				session.addSubDirToCurrentDir(param);
 				fileToList = session.getCurrentDir();
 				if(violatesChroot(fileToList)) {
 					errString = "450 Listing target violates chroot\r\n";
